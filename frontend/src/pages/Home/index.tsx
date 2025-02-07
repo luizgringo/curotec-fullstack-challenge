@@ -19,8 +19,8 @@ export function HomePage() {
                 Esta é uma aplicação de exemplo usando React, TypeScript e as melhores práticas de desenvolvimento.
             </Text>
             <Stack direction="row" spacing={4} justify="center">
-                <Button colorScheme="brand" size="lg">
-                    Começar Agora
+                <Button colorScheme="brand" size="lg" onClick={() => navigate('/items')}>
+                    Cadastrar Items
                 </Button>
                 <Button variant="outline" colorScheme="brand" size="lg" onClick={() => navigate('/sobre')}>
                     Saiba Mais

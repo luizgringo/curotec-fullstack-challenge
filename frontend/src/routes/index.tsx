@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { MainLayout } from '../layouts/MainLayout';
 import { HomePage, AboutPage } from '../pages';
 import { LoginPage, ItemsPage, ItemForm } from '../pages';
+import { PrivateRoute } from '../components/PrivateRoute';
 
 export const router = createBrowserRouter([
     {
@@ -10,7 +11,11 @@ export const router = createBrowserRouter([
     },
     {
         path: '/',
-        element: <MainLayout />,
+        element: (
+            <PrivateRoute>
+                <MainLayout />
+            </PrivateRoute>
+        ),
         children: [
             {
                 index: true,

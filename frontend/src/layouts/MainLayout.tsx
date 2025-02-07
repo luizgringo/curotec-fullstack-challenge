@@ -37,6 +37,8 @@ import { useTheme } from '../contexts/ThemeContext';
 import { Logo } from '../components/Logo';
 import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from '../components/PageTransition';
+import { useAuth } from '../contexts/AuthContext';
+import { useEffect } from 'react';
 
 interface LinkItemProps {
     name: string;
@@ -61,9 +63,8 @@ interface SidebarProps extends BoxProps {
 
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Início', icon: FiHome, path: '/' },
-    { name: 'Sobre', icon: FiInfo, path: '/sobre' },
     { name: 'Itens', icon: FiList, path: '/items' },
-    { name: 'Login', icon: FiLogIn, path: '/login' },
+    { name: 'Sobre', icon: FiInfo, path: '/sobre' },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -154,8 +155,13 @@ const NavItem = ({ icon, children, path, isActive, ...rest }: NavItemProps) => {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     const { isDarkMode, toggleTheme } = useTheme();
+    const { user, logout } = useAuth();
     const bgColor = useColorModeValue('white', 'gray.900');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+
+    useEffect(() => {
+        console.log('User Data:', user);
+    }, [user]);
 
     return (
         <Flex
@@ -203,7 +209,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size="sm"
-                                    name="Usuário"
+                                    name={user?.name}
+                                    src={user?.picture}
                                     bg="brand.500"
                                     color="white"
                                 />
@@ -213,9 +220,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                     spacing="1px"
                                     ml="2"
                                 >
-                                    <Text fontSize="sm">Visitante</Text>
+                                    <Text fontSize="sm">{user?.name}</Text>
                                     <Text fontSize="xs" color="gray.600">
-                                        Não autenticado
+                                        {user?.email}
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -224,8 +231,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             </HStack>
                         </MenuButton>
                         <MenuList>
-                            <MenuItem as={RouterLink} to="/login">
-                                Entrar
+                            <MenuItem onClick={logout}>
+                                Sair
                             </MenuItem>
                             <MenuDivider />
                             <MenuItem onClick={toggleTheme}>

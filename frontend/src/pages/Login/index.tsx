@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     Container,
+    Divider,
     FormControl,
     FormLabel,
     FormErrorMessage,
@@ -10,99 +11,52 @@ import {
     Stack,
     Text,
     useColorModeValue,
-    useToast,
     Flex,
+    VStack,
+    HStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FcGoogle } from 'react-icons/fc';
+import { FiMail } from 'react-icons/fi';
 import { Logo } from '../../components/Logo';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LoginFormData {
     email: string;
-    password: string;
 }
 
 export function LoginPage() {
-    const [formData, setFormData] = useState<LoginFormData>({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState<LoginFormData>({ email: '' });
     const [errors, setErrors] = useState<Partial<LoginFormData>>({});
-    const [isLoading, setIsLoading] = useState(false);
-    
     const navigate = useNavigate();
-    const toast = useToast();
+    const location = useLocation();
+    const { loginWithGoogle, loginWithCredentials, isAuthenticated, isLoading } = useAuth();
 
-    // Cores dinâmicas baseadas no tema
     const bgColor = useColorModeValue('white', 'gray.800');
     const textColor = useColorModeValue('gray.600', 'gray.200');
     const boxShadow = useColorModeValue('base', 'dark-lg');
+    const dividerColor = useColorModeValue('gray.300', 'gray.600');
 
-    const validateForm = () => {
-        const newErrors: Partial<LoginFormData> = {};
-        
+    const from = location.state?.from?.pathname || '/';
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, navigate, from]);
+
+    const handleEmailLogin = () => {
         if (!formData.email) {
-            newErrors.email = 'E-mail é obrigatório';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'E-mail inválido';
+            setErrors({ email: 'E-mail é obrigatório' });
+            return;
         }
-        
-        if (!formData.password) {
-            newErrors.password = 'Senha é obrigatória';
-        } else if (formData.password.length < 6) {
-            newErrors.password = 'A senha deve ter pelo menos 6 caracteres';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        if (!validateForm()) return;
-
-        setIsLoading(true);
-        
-        try {
-            // Simulando uma chamada à API
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // TODO: Implementar integração com API real
-            if (formData.email === 'admin@example.com' && formData.password === '123456') {
-                toast({
-                    title: 'Login realizado com sucesso!',
-                    status: 'success',
-                    duration: 3000,
-                    position: 'top',
-                });
-                navigate('/');
-            } else {
-                toast({
-                    title: 'Erro ao fazer login',
-                    description: 'E-mail ou senha inválidos',
-                    status: 'error',
-                    duration: 3000,
-                    position: 'top',
-                });
-            }
-        } catch (error) {
-            toast({
-                title: 'Erro ao fazer login',
-                description: 'Ocorreu um erro ao tentar fazer login',
-                status: 'error',
-                duration: 3000,
-                position: 'top',
-            });
-        } finally {
-            setIsLoading(false);
-        }
+        loginWithCredentials({ email: formData.email });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        // Limpa o erro do campo quando o usuário começa a digitar
         if (errors[name as keyof LoginFormData]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -119,54 +73,58 @@ export function LoginPage() {
                     borderWidth="1px"
                 >
                     <Stack spacing={6}>
-                        <Heading size="lg" textAlign="center">
-                            <Flex justify="center" align="center">
-                                <Logo height="40px" />
-                            </Flex>
-                        </Heading>
-                        <Text color={textColor} textAlign="center">
-                            Entre com suas credenciais para acessar
-                        </Text>
+                        <VStack spacing={4}>
+                            <Logo height="40px" />
+                            <Heading size="lg" textAlign="center">
+                                Bem-vindo de volta
+                            </Heading>
+                            <Text fontSize="md" color={textColor} textAlign="center">
+                                Escolha como deseja fazer login
+                            </Text>
+                        </VStack>
 
-                        <form onSubmit={handleSubmit}>
-                            <Stack spacing={4}>
-                                <FormControl isInvalid={!!errors.email}>
-                                    <FormLabel>E-mail</FormLabel>
-                                    <Input
-                                        name="email"
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder="seu@email.com"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.email}</FormErrorMessage>
-                                </FormControl>
+                        <VStack spacing={4} align="stretch">
+                            <Button
+                                size="lg"
+                                onClick={() => loginWithGoogle()}
+                                isLoading={isLoading}
+                                leftIcon={<FcGoogle />}
+                                variant="outline"
+                            >
+                                Continuar com Google
+                            </Button>
 
-                                <FormControl isInvalid={!!errors.password}>
-                                    <FormLabel>Senha</FormLabel>
-                                    <Input
-                                        name="password"
-                                        type="password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        placeholder="******"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.password}</FormErrorMessage>
-                                </FormControl>
+                            <HStack>
+                                <Divider borderColor={dividerColor} />
+                                <Text fontSize="sm" color={textColor} whiteSpace="nowrap">
+                                    ou use seu e-mail
+                                </Text>
+                                <Divider borderColor={dividerColor} />
+                            </HStack>
 
-                                <Button
-                                    type="submit"
-                                    colorScheme="brand"
+                            <FormControl isInvalid={!!errors.email}>
+                                <FormLabel>E-mail</FormLabel>
+                                <Input
+                                    name="email"
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="Digite seu e-mail"
                                     size="lg"
-                                    fontSize="md"
-                                    isLoading={isLoading}
-                                >
-                                    Entrar
-                                </Button>
-                            </Stack>
-                        </form>
+                                />
+                                <FormErrorMessage>{errors.email}</FormErrorMessage>
+                            </FormControl>
+
+                            <Button
+                                colorScheme="brand"
+                                size="lg"
+                                onClick={handleEmailLogin}
+                                isLoading={isLoading}
+                                leftIcon={<FiMail />}
+                            >
+                                Continuar com E-mail
+                            </Button>
+                        </VStack>
                     </Stack>
                 </Box>
             </Container>
