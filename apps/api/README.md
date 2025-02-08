@@ -1,12 +1,18 @@
 # Curotec Backend API
 
-A robust REST API built with Node.js, Express, and TypeScript for inventory management.
+A robust REST API built with Node.js, Express, TypeScript, and Prisma ORM for inventory management.
 
 ## 🚀 Quick Start
 
 ```bash
 # Install dependencies
 pnpm install
+
+# Generate Prisma Client
+pnpm dlx prisma generate
+
+# Run migrations
+pnpm dlx prisma migrate dev
 
 # Start development server
 pnpm dev
@@ -24,6 +30,7 @@ pnpm start
 - **Node.js**: JavaScript runtime environment
 - **Express**: Web application framework
 - **TypeScript**: Static typing for enhanced development
+- **Prisma**: Modern database toolkit and ORM
 - **SQLite**: Lightweight, serverless database
 
 ### Development Tools
@@ -31,8 +38,17 @@ pnpm start
 - **nodemon**: Development server with hot reload
 - **express-async-errors**: Async error handling
 - **cors**: Cross-Origin Resource Sharing
+- **Prisma Studio**: Database management UI
 
 ## 📱 Features
+
+### Database & ORM
+- Prisma Schema for type-safe models
+- Automatic migrations
+- Type-safe database queries
+- Efficient connection pooling
+- Database seeding support
+- Prisma Studio for data management
 
 ### RESTful API
 - Standard HTTP methods (GET, POST, PUT, DELETE)
@@ -40,30 +56,25 @@ pnpm start
 - Status codes following HTTP standards
 - Query parameters for filtering and pagination
 
-### Database Operations
-- SQLite integration
-- Prepared statements for security
-- Transaction support
-- Automatic migrations
-- Data validation
-
 ### Error Handling
 - Global error middleware
 - Custom error classes
 - Detailed error messages
 - Stack traces in development
+- Prisma error handling
 
 ### Security
 - CORS configuration
 - Request validation
-- SQL injection protection
-- Rate limiting support
+- Type-safe operations
+- Database connection security
 
 ## 🔧 Configuration
 
 ### Environment Variables
 Create a `.env` file with the following variables:
 ```env
+DATABASE_URL="file:../database.sqlite"
 NODE_ENV=development
 PORT=3000
 ```
@@ -76,8 +87,9 @@ pnpm build       # Build for production
 pnpm start       # Start production server
 
 # Database
-pnpm migrate     # Run database migrations
-pnpm seed        # Seed database with initial data
+pnpm dlx prisma generate    # Generate Prisma Client
+pnpm dlx prisma migrate dev # Run migrations
+pnpm dlx prisma studio     # Open Prisma Studio
 
 # Code Quality
 pnpm lint        # Run ESLint
@@ -89,12 +101,15 @@ pnpm format      # Format code with Prettier
 ```
 src/
 ├── controllers/    # Request handlers
-├── models/         # Database models
+├── models/         # Prisma model wrappers
 ├── routes/         # API routes
-├── database/       # Database configuration
 ├── middlewares/    # Express middlewares
 ├── types/          # TypeScript types
 └── utils/          # Utility functions
+
+prisma/
+├── migrations/     # Database migrations
+└── schema.prisma   # Prisma schema
 ```
 
 ## 🔗 API Endpoints
@@ -119,12 +134,12 @@ interface ApiResponse<T> {
 
 ## 🧪 Best Practices
 
+- Prisma schema-driven development
+- Type-safe database operations
 - RESTful API design
-- TypeScript for type safety
 - Modular architecture
 - Error handling middleware
-- Request validation
-- Database transactions
+- Database migrations
 - Logging and monitoring
 - Code documentation
 
@@ -145,4 +160,5 @@ docker run -p 3000:3000 curotec-backend
 - [Node.js Documentation](https://nodejs.org)
 - [Express Documentation](https://expressjs.com)
 - [TypeScript Documentation](https://www.typescriptlang.org)
+- [Prisma Documentation](https://www.prisma.io/docs)
 - [SQLite Documentation](https://www.sqlite.org/docs.html) 

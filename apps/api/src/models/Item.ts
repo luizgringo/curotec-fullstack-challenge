@@ -1,85 +1,94 @@
-import db from '../database';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export interface Item {
     id: number;
     name: string;
     description: string;
-    created_at: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateItemDTO {
     name: string;
-    description: string;
+    description?: string;
+}
+
+export interface FindAllParams {
+    page?: number;
+    limit?: number;
+    search?: string;
 }
 
 class ItemModel {
-    async create({ name, description }: CreateItemDTO): Promise<Item> {
-        return new Promise((resolve, reject) => {
-            db.run('INSERT INTO items (name, description) VALUES (?, ?)', [name, description], function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                db.get<Item>('SELECT * FROM items WHERE id = ?', [this.lastID], (err, row) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve(row);
-                });
-            });
+    static async create(data: CreateItemDTO) {
+        return prisma.item.create({
+            data
         });
     }
 
-    async findAll(): Promise<Item[]> {
-        return new Promise((resolve, reject) => {
-            db.all('SELECT * FROM items ORDER BY created_at DESC', (err, rows: Item[]) => {
-                if (err) {
-                    reject(err);
-                    return;
+    static async findAll({ page = 1, limit = 10, search = '' }: FindAllParams = {}) {
+        const skip = (page - 1) * limit;
+        
+        const where = search ? {
+            OR: [
+                { name: { contains: search } },
+                { description: { contains: search } }
+            ]
+        } : {};
+
+        const [items, total] = await Promise.all([
+            prisma.item.findMany({
+                where,
+                orderBy: [
+                    { createdAt: 'desc' },
+                    { id: 'desc' }
+                ],
+                skip,
+                take: limit,
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    createdAt: true,
+                    updatedAt: true
                 }
-                resolve(rows);
-            });
+            }),
+            prisma.item.count({ where })
+        ]);
+
+        const totalPages = Math.ceil(total / limit);
+
+        return {
+            items,
+            pagination: {
+                total,
+                totalPages,
+                currentPage: page,
+                limit
+            }
+        };
+    }
+
+    static async findById(id: number) {
+        return prisma.item.findUnique({
+            where: { id }
         });
     }
 
-    async findById(id: number): Promise<Item | null> {
-        return new Promise((resolve, reject) => {
-            db.get<Item>('SELECT * FROM items WHERE id = ?', [id], (err, row) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(row || null);
-            });
+    static async update(id: number, data: Partial<CreateItemDTO>) {
+        return prisma.item.update({
+            where: { id },
+            data
         });
     }
 
-    async update(id: number, { name, description }: Partial<CreateItemDTO>): Promise<Item | null> {
-        return new Promise((resolve, reject) => {
-            db.run('UPDATE items SET name = ?, description = ? WHERE id = ?', [name, description, id], (err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                this.findById(id).then(resolve).catch(reject);
-            });
-        });
-    }
-
-    async delete(id: number): Promise<void> {
-        return new Promise((resolve, reject) => {
-            db.run('DELETE FROM items WHERE id = ?', [id], (err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve();
-            });
+    static async delete(id: number) {
+        return prisma.item.delete({
+            where: { id }
         });
     }
 }
 
-export default new ItemModel();
+export default ItemModel;

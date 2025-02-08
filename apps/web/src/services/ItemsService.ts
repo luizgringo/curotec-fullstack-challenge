@@ -1,6 +1,22 @@
 import { API_BASE_URL } from '../constants/config';
 import type { Item, CreateItemDTO } from '../types';
 
+interface PaginationParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+}
+
+interface PaginatedResponse<T> {
+    items: T[];
+    pagination: {
+        total: number;
+        totalPages: number;
+        currentPage: number;
+        limit: number;
+    };
+}
+
 export class ItemsService {
   static async create(data: CreateItemDTO) {
     const response = await fetch(`${API_BASE_URL}/api/items`, {
@@ -18,8 +34,17 @@ export class ItemsService {
     return response.json();
   }
 
-  static async findAll(): Promise<Item[]> {
-    const response = await fetch(`${API_BASE_URL}/api/items`);
+  static async findAll(params: PaginationParams = {}): Promise<PaginatedResponse<Item>> {
+    const searchParams = new URLSearchParams();
+    
+    if (params.page) searchParams.append('page', String(params.page));
+    if (params.limit) searchParams.append('limit', String(params.limit));
+    if (params.search) searchParams.append('search', params.search);
+
+    const queryString = searchParams.toString();
+    const url = `${API_BASE_URL}/api/items${queryString ? `?${queryString}` : ''}`;
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error('Error fetching items');

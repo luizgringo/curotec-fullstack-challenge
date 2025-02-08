@@ -23,7 +23,7 @@ export function AboutPage() {
                     </Heading>
                     <Text fontSize="lg" color="gray.500">
                         A modern inventory management system showcasing best practices in full-stack development
-                        with React, TypeScript, and Node.js.
+                        with React, TypeScript, Node.js, and Prisma ORM.
                     </Text>
                 </Box>
 
@@ -34,8 +34,8 @@ export function AboutPage() {
                     <Text color="gray.500" mb={4}>
                         This project demonstrates a modern approach to building scalable web applications
                         using industry-standard technologies and best practices. It features a clean,
-                        intuitive interface for managing inventory items with real-time updates and
-                        secure authentication.
+                        intuitive interface for managing inventory items with real-time updates,
+                        secure authentication, and type-safe database operations.
                     </Text>
                 </Box>
 
@@ -84,8 +84,8 @@ export function AboutPage() {
                             <List spacing={2}>
                                 <ListItem color="gray.500">• Node.js with Express for robust API development</ListItem>
                                 <ListItem color="gray.500">• TypeScript for type safety across the stack</ListItem>
-                                <ListItem color="gray.500">• SQLite for reliable data persistence</ListItem>
-                                <ListItem color="gray.500">• Express middleware for error handling and validation</ListItem>
+                                <ListItem color="gray.500">• Prisma ORM for type-safe database operations</ListItem>
+                                <ListItem color="gray.500">• SQLite with automatic migrations</ListItem>
                             </List>
                         </section>
                         
@@ -93,13 +93,13 @@ export function AboutPage() {
                         
                         <section>
                             <Heading as="h3" size="md" mb={2}>
-                                API Features
+                                Database Features
                             </Heading>
                             <List spacing={2}>
-                                <ListItem color="gray.500">• RESTful endpoints following best practices</ListItem>
-                                <ListItem color="gray.500">• CRUD operations for inventory management</ListItem>
-                                <ListItem color="gray.500">• Comprehensive error handling</ListItem>
-                                <ListItem color="gray.500">• Data validation and sanitization</ListItem>
+                                <ListItem color="gray.500">• Schema-driven development with Prisma</ListItem>
+                                <ListItem color="gray.500">• Automatic type generation for models</ListItem>
+                                <ListItem color="gray.500">• Efficient query building and execution</ListItem>
+                                <ListItem color="gray.500">• Database migrations and versioning</ListItem>
                             </List>
                         </section>
                     </Stack>
@@ -131,7 +131,7 @@ export function AboutPage() {
                             <List spacing={2}>
                                 <ListItem color="gray.500">• Secure authentication with Auth0</ListItem>
                                 <ListItem color="gray.500">• Protected API routes and endpoints</ListItem>
-                                <ListItem color="gray.500">• Optimized bundle size and loading</ListItem>
+                                <ListItem color="gray.500">• Type-safe database operations with Prisma</ListItem>
                                 <ListItem color="gray.500">• Efficient data caching and updates</ListItem>
                             </List>
                         </section>
@@ -145,10 +145,10 @@ export function AboutPage() {
                     <List spacing={2}>
                         <ListItem color="gray.500">• Clean, modular architecture for maintainability</ListItem>
                         <ListItem color="gray.500">• Comprehensive TypeScript types across the stack</ListItem>
+                        <ListItem color="gray.500">• Schema-driven database development with Prisma</ListItem>
                         <ListItem color="gray.500">• Docker support for easy deployment</ListItem>
                         <ListItem color="gray.500">• Monorepo structure with Turborepo</ListItem>
                         <ListItem color="gray.500">• Consistent code style with ESLint and Prettier</ListItem>
-                        <ListItem color="gray.500">• Git workflow with conventional commits</ListItem>
                     </List>
                 </Box>
             </Stack>

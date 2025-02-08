@@ -19,12 +19,13 @@ The project is organized as a monorepo with two main applications:
 
 ### Backend (`apps/api`)
 - Node.js + Express + TypeScript
-- SQLite database
+- Prisma ORM with SQLite
 - Features:
   - RESTful API
-  - Items CRUD operations
+  - Type-safe database operations
+  - Automatic migrations
+  - Data validation
   - Error handling
-  - Type safety
 
 ## Prerequisites
 
@@ -54,11 +55,17 @@ AUTH0_CLIENT_ID=OSWL8XRyrUD6eAuxzC0tAEkw8QUaLLlv
 VITE_API_URL=http://localhost:3000
 ```
 
-Create a `.env` file in the root directory for the API:
+Create a `.env` file in the `apps/api` directory:
 ```env
-# API Configuration
-NODE_ENV=production
+DATABASE_URL="file:../database.sqlite"
+NODE_ENV=development
 PORT=3000
+```
+
+4. Set up the database:
+```bash
+cd apps/api
+pnpm dlx prisma migrate dev
 ```
 
 ## Development
@@ -77,33 +84,23 @@ pnpm --filter web dev
 pnpm --filter api dev
 ```
 
-## Building
+## Database Management
 
-Build all applications:
+The project uses Prisma ORM for database operations. Here are some useful commands:
+
 ```bash
-pnpm build
+# Generate Prisma Client
+pnpm dlx prisma generate
+
+# Create a new migration
+pnpm dlx prisma migrate dev
+
+# Reset database
+pnpm dlx prisma migrate reset
+
+# Open Prisma Studio
+pnpm dlx prisma studio
 ```
-
-## Docker Support
-
-The project includes Docker support for easy deployment.
-
-1. Build and run with Docker Compose:
-```bash
-docker-compose up --build
-```
-
-This will start:
-- Frontend at http://localhost
-- Backend API at http://localhost:3000
-
-## Available Scripts
-
-- `pnpm dev` - Start development servers
-- `pnpm build` - Build all applications
-- `pnpm lint` - Run linting
-- `pnpm format` - Format code
-- `pnpm clean` - Clean build files
 
 ## API Endpoints
 
@@ -130,6 +127,7 @@ This will start:
   - Node.js
   - Express
   - TypeScript
+  - Prisma ORM
   - SQLite
   - Express Async Errors
 
@@ -148,17 +146,10 @@ This will start:
 - 📱 Responsive design
 - 🚀 Fast development with Vite
 - 🔄 Real-time updates with React Query
-- 🛠️ Type safety with TypeScript
+- 🛠️ Type safety with TypeScript and Prisma
+- 🗄️ Efficient database operations with Prisma ORM
 - 🐳 Docker support for easy deployment
 - 📦 Monorepo structure with Turborepo
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License
 

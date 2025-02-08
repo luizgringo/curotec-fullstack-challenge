@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import ItemModel, { type CreateItemDTO } from '../models/Item';
+import ItemModel, { type CreateItemDTO, type FindAllParams } from '../models/Item';
 
 class ItemController {
     static async create(req: Request, res: Response) {
@@ -14,8 +14,16 @@ class ItemController {
     }
 
     static async index(req: Request, res: Response) {
-        const items = await ItemModel.findAll();
-        return res.json(items);
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.min(50, Math.max(1, Number(req.query.limit) || 10));
+        const search = String(req.query.search || '');
+
+        if (isNaN(page) || isNaN(limit)) {
+            return res.status(400).json({ error: 'Invalid pagination parameters' });
+        }
+
+        const result = await ItemModel.findAll({ page, limit, search });
+        return res.json(result);
     }
 
     static async show(req: Request, res: Response) {
@@ -37,13 +45,12 @@ class ItemController {
             return res.status(400).json({ error: 'No data provided for update' });
         }
 
-        const item = await ItemModel.update(Number(id), { name, description });
-
-        if (!item) {
+        try {
+            const item = await ItemModel.update(Number(id), { name, description });
+            return res.json(item);
+        } catch (error) {
             return res.status(404).json({ error: 'Item not found' });
         }
-
-        return res.json(item);
     }
 
     static async delete(req: Request, res: Response) {
