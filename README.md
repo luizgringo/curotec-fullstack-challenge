@@ -1,84 +1,165 @@
-# Turborepo starter
+# Curotec Challenge
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern inventory management system built with React, TypeScript, and Auth0 authentication. This project uses a monorepo structure with Turborepo for better development experience and project organization.
 
-## Using this example
+## Project Structure
 
-Run the following command:
+The project is organized as a monorepo with two main applications:
 
-```sh
-npx create-turbo@latest
+### Frontend (`apps/web`)
+- Built with React + TypeScript + Vite
+- Chakra UI for component library
+- React Query for state management
+- Auth0 for authentication
+- Features:
+  - User authentication
+  - Item management (CRUD operations)
+  - Responsive design
+  - Dark/Light theme support
+
+### Backend (`apps/api`)
+- Node.js + Express + TypeScript
+- SQLite database
+- Features:
+  - RESTful API
+  - Items CRUD operations
+  - Error handling
+  - Type safety
+
+## Prerequisites
+
+- Node.js >= 18
+- PNPM >= 8.9.0
+- Auth0 account and credentials
+
+## Getting Started
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd curotec-challenge
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+2. Install dependencies:
+```bash
+pnpm install
 ```
 
-### Develop
+3. Set up environment variables:
 
-To develop all apps and packages, run the following command:
-
+Create a `.env` file in the `apps/web` directory using `.env.example` as a template:
+```env
+AUTH0_DOMAIN=dev-3mv60z6wbdj7u7tz.us.auth0.com
+AUTH0_CLIENT_ID=OSWL8XRyrUD6eAuxzC0tAEkw8QUaLLlv
+VITE_API_URL=http://localhost:3000
 ```
-cd my-turborepo
+
+Create a `.env` file in the root directory for the API:
+```env
+# API Configuration
+NODE_ENV=production
+PORT=3000
+```
+
+## Development
+
+Run all applications in development mode:
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+Or run specific applications:
+```bash
+# Frontend only
+pnpm --filter web dev
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+# Backend only
+pnpm --filter api dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Building
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
+Build all applications:
+```bash
+pnpm build
 ```
-npx turbo link
+
+## Docker Support
+
+The project includes Docker support for easy deployment.
+
+1. Build and run with Docker Compose:
+```bash
+docker-compose up --build
 ```
 
-## Useful Links
+This will start:
+- Frontend at http://localhost
+- Backend API at http://localhost:3000
 
-Learn more about the power of Turborepo:
+## Available Scripts
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- `pnpm dev` - Start development servers
+- `pnpm build` - Build all applications
+- `pnpm lint` - Run linting
+- `pnpm format` - Format code
+- `pnpm clean` - Clean build files
+
+## API Endpoints
+
+### Items
+
+- `GET /api/items` - List all items
+- `GET /api/items/:id` - Get a specific item
+- `POST /api/items` - Create a new item
+- `PUT /api/items/:id` - Update an item
+- `DELETE /api/items/:id` - Delete an item
+
+## Technologies
+
+- **Frontend**:
+  - React 19
+  - TypeScript
+  - Vite
+  - Chakra UI
+  - React Query
+  - React Router
+  - Auth0
+
+- **Backend**:
+  - Node.js
+  - Express
+  - TypeScript
+  - SQLite
+  - Express Async Errors
+
+- **Development Tools**:
+  - Turborepo
+  - PNPM Workspaces
+  - Docker
+  - Biome
+  - ESLint
+
+## Project Features
+
+- 🔐 Secure authentication with Auth0
+- 🎨 Beautiful UI with Chakra UI
+- 🌓 Dark/Light theme support
+- 📱 Responsive design
+- 🚀 Fast development with Vite
+- 🔄 Real-time updates with React Query
+- 🛠️ Type safety with TypeScript
+- 🐳 Docker support for easy deployment
+- 📦 Monorepo structure with Turborepo
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License.

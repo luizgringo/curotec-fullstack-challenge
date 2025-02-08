@@ -1,50 +1,140 @@
-# React + TypeScript + Vite
+# Curotec Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and responsive web interface built with React and TypeScript for inventory management.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Install dependencies
+pnpm install
 
-## Expanding the ESLint configuration
+# Start development server
+pnpm dev
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# Build for production
+pnpm build
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🛠 Tech Stack
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Core Technologies
+- **React 19**: Modern JavaScript library for building user interfaces
+- **TypeScript**: Static typing for enhanced development experience
+- **Vite**: Next-generation frontend tooling for faster development
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### UI Framework
+- **Chakra UI**: Modern, accessible component library
+- **Framer Motion**: Powerful animation library
+- **React Icons**: Extensive icon collection
+
+### State Management & Data Fetching
+- **React Query**: 
+  - Smart data caching
+  - Real-time updates
+  - Automatic background refetching
+  - Loading & error states management
+  - Server state synchronization
+
+### Authentication
+- **Auth0**: 
+  - Social login with Google
+  - JWT token management
+  - Route protection
+  - Session handling
+
+## 📱 Features
+
+### User Interface
+- Responsive design for all devices
+- Dark/Light theme support
+- Loading states and animations
+- Toast notifications for feedback
+- Modern and clean UI
+
+### Item Management
+- List items with pagination
+- Create new items with validation
+- Edit items in real-time
+- Delete items with confirmation
+- Search and filter capabilities
+
+### Authentication & Authorization
+- Protected routes
+- User profile management
+- Session persistence
+- Automatic token refresh
+
+## 🔧 Configuration
+
+### Environment Variables
+Create a `.env` file with the following variables:
+```env
+VITE_AUTH0_DOMAIN=your-domain.auth0.com
+VITE_AUTH0_CLIENT_ID=your-client-id
+VITE_API_URL=http://localhost:3000
 ```
+
+### Available Scripts
+```bash
+# Development
+pnpm dev         # Start development server
+pnpm build       # Build for production
+pnpm preview     # Preview production build
+
+# Code Quality
+pnpm lint        # Run ESLint
+pnpm format      # Format code with Prettier
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/      # Reusable UI components
+├── contexts/        # React contexts
+├── hooks/          # Custom React hooks
+├── layouts/        # Page layouts
+├── pages/          # Application pages
+├── services/       # API services
+├── theme/          # Chakra UI theme
+├── types/          # TypeScript types
+└── utils/          # Utility functions
+```
+
+## 🔗 API Integration
+
+- RESTful API communication
+- Axios interceptors for error handling
+- Automatic auth headers
+- TypeScript interfaces for API responses
+
+## 🧪 Best Practices
+
+- TypeScript for type safety
+- ESLint + Prettier for code quality
+- Modular component architecture
+- Custom hooks for logic reuse
+- Consistent error handling
+- Loading states management
+- Responsive design patterns
+
+## 🐳 Docker Support
+
+The application includes a Dockerfile for containerization:
+
+```bash
+# Build image
+docker build -t curotec-frontend .
+
+# Run container
+docker run -p 80:80 curotec-frontend
+```
+
+## 📚 Learn More
+
+- [React Documentation](https://react.dev)
+- [TypeScript Documentation](https://www.typescriptlang.org)
+- [Vite Documentation](https://vitejs.dev)
+- [Chakra UI Documentation](https://chakra-ui.com)
+- [React Query Documentation](https://tanstack.com/query)
+- [Auth0 Documentation](https://auth0.com/docs)

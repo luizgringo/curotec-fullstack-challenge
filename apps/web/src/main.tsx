@@ -13,7 +13,7 @@ import './index.css';
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
-    throw new Error('Elemento root não encontrado');
+    throw new Error('Root element not found');
 }
 
 const queryClient = new QueryClient();
@@ -21,8 +21,8 @@ const queryClient = new QueryClient();
 createRoot(rootElement).render(
     <StrictMode>
         <Auth0Provider
-            domain="dev-3mv60z6wbdj7u7tz.us.auth0.com"
-            clientId="OSWL8XRyrUD6eAuxzC0tAEkw8QUaLLlv"
+            domain={import.meta.env.VITE_AUTH0_DOMAIN}
+            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
             authorizationParams={{
                 redirect_uri: window.location.origin,
                 scope: 'openid profile email'

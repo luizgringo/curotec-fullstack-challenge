@@ -1,7 +1,7 @@
 {
-    "name": "backend",
+    "name": "curotec-challenge-backend",
     "version": "1.0.0",
-    "description": "Backend para o Curotec Challenge",
+    "description": "Backend for the Curotec Challenge",
     "main": "dist/server.js",
     "scripts": {
         "dev": "ts-node-dev --respawn --transpile-only src/server.ts",

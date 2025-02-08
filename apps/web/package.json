@@ -1,5 +1,6 @@
 {
     "name": "curotec-challenge-frontend",
+    "description": "Frontend for the Curotec Challenge",
     "private": true,
     "version": "0.0.0",
     "type": "module",
